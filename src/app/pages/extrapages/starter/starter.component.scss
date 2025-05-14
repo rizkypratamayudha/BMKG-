@@ -1,0 +1,29 @@
+.card {
+    border-radius: 15px;
+    background-color: #1e293b;
+    color: white;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.border-end {
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.text-muted {
+    color: #94a3b8 !important;
+}
+
+.daily-forecast .d-flex {
+    padding: 10px 0;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    border-radius: 20px;
+}

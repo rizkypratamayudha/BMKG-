@@ -1,0 +1,146 @@
+<!-- Start Breadcrumbs -->
+<!-- <app-breadcrumbs title="Dashboard" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs> -->
+<!-- End Breadcrumbs -->
+
+<div class="row" *ngIf="weatherData && weatherData.data && weatherData.data.length > 0">
+    <div class="col-xxl-8">
+        <!-- City and Current Weather Card -->
+        <div class="card overflow-hidden mb-4">
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="col-md-6 ps-4">
+                        <h2 class="mb-0 fs-1">{{ weatherData.lokasi.kecamatan }}, {{ weatherData.lokasi.kotkab }}</h2>
+                        <p class="text-muted mb-2">{{ weatherData.lokasi.provinsi }}</p>
+                        <h1 class="display-1 mb-0 pt-4" *ngIf="weatherData.data[0].cuaca[0][0]">
+                            {{ weatherData.data[0].cuaca[0][0].t }}°C
+                        </h1>
+                        <p class="text-muted mt-2" *ngIf="weatherData.data[0].cuaca[0][0]">
+                            {{ weatherData.data[0].cuaca[0][0].weather_desc_en }}
+                        </p>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center justify-content-end pe-4">
+                        <!-- Use image from API if available, otherwise fallback to icon -->
+                        <img *ngIf="weatherData.data[0].cuaca[0][0]?.image" 
+                            [src]="weatherData.data[0].cuaca[0][0].image" 
+                            alt="Weather icon" 
+                            style="height: 120px;">
+                        <i *ngIf="!weatherData.data[0].cuaca[0][0]?.image" 
+                            class="ri-cloud-line fs-1 text-warning" 
+                            style="font-size: 8rem !important;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Forecast Card -->
+        <div class="card overflow-hidden mb-4" *ngIf="weatherData.data[0].cuaca[1]?.length">
+            <div class="card-body p-4">
+                <h5 class="card-title mb-4">TODAY'S FORECAST</h5>
+                <div class="row text-center">
+                    <!-- Take the first 6 forecasts for today (or available count) -->
+                    <ng-container *ngFor="let forecast of weatherData.data[0].cuaca[1].slice(0, 6); let i = index; let last = last">
+                        <div [class]="'col-2 ' + (!last ? 'border-end' : '')">
+                            <p class="mb-2">{{ formatTime(forecast.local_datetime) }}</p>
+                            <img [src]="forecast.image" alt="Weather icon" style="height: 50px;">
+                            <h5 class="fs-3">{{ forecast.t }}°</h5>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <!-- Air Conditions Card -->
+        <div class="card overflow-hidden mb-4" *ngIf="weatherData.data[0].cuaca[1][0]">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">AIR CONDITIONS</h5>
+                    <button class="btn btn-sm btn-primary">See more</button>
+                </div>
+                <!-- First row: Real Feel and Wind -->
+                <div class="row mt-3">
+                    <div class="col-md-6 col-6 mb-3">
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="ri-temp-cold-line fs-3 me-3 text-muted"></i>
+                            <div>
+                                <p class="text-muted mb-1">Real Feel</p>
+                                <h5 class="mb-0 fs-3">{{ weatherData.data[0].cuaca[1][0].t }}°</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="ri-windy-line fs-3 me-3 text-muted"></i>
+                            <div>
+                                <p class="text-muted mb-1">Wind</p>
+                                <h5 class="mb-0 fs-3">{{ weatherData.data[0].cuaca[1][0].ws }} km/h</h5>
+                                <p class="text-muted">{{ weatherData.data[0].cuaca[1][0].wd_to }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Second row: Humidity and Visibility -->
+                <div class="row mt-3">
+                    <div class="col-md-6 col-6 mb-3">
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="ri-drop-line fs-3 me-3 text-muted"></i>
+                            <div>
+                                <p class="text-muted mb-1">Humidity</p>
+                                <h5 class="mb-0 fs-3">{{ weatherData.data[0].cuaca[1][0].hu }}%</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        <div class="d-flex align-items-center justify-content-center h-100">
+                            <i class="ri-eye-line fs-3 me-3 text-muted"></i>
+                            <div>
+                                <p class="text-muted mb-1">Visibility</p>
+                                <h5 class="mb-0 fs-3">{{ weatherData.data[0].cuaca[1][0].vs_text }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xxl-4">
+        <!-- 3-Day Forecast -->
+        <div class="card">
+            <div class="card-body pb-0 p-4">
+                <h5 class="card-title mb-4">3-DAY FORECAST</h5>
+
+                <div class="daily-forecast">
+                    <!-- Today -->
+                        <div class="d-flex justify-content-between align-items-center mb-3 p-2 border-bottom" *ngIf="weatherData.data[0].cuaca[0][0]">
+                            <span>Today</span>
+                            <div class="d-flex align-items-center gap-3">
+                                <img [src]="weatherData.data[0].cuaca[0][0].image" alt="Weather icon" style="height: 30px;">
+                                <span>{{ weatherData.data[0].cuaca[0][0].weather_desc_en }}</span>
+                            </div>
+                            <span>{{ getDayMinMaxTemp(weatherData.data[0].cuaca[1]) }}</span>
+                        </div>
+
+                    <!-- Tomorrow -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-2 border-bottom" *ngIf="weatherData.data[0].cuaca[1]?.length">
+                        <span>{{ getDayName(weatherData.data[0].cuaca[1][0]?.local_datetime) }}</span>
+                        <div class="d-flex align-items-center gap-3">
+                            <img [src]="getMostFrequentWeatherIcon(weatherData.data[0].cuaca[1])" alt="Weather icon" style="height: 30px;">
+                            <span>{{ getMostFrequentWeather(weatherData.data[0].cuaca[2]) }}</span>
+                        </div>
+                        <span>{{ getDayMinMaxTemp(weatherData.data[0].cuaca[1]) }}</span>
+                    </div>
+
+                    <!-- Day after tomorrow -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-2" *ngIf="weatherData.data[0].cuaca[2]?.length">
+                        <span>{{ getDayName(weatherData.data[0].cuaca[2][0]?.local_datetime) }}</span>
+                        <div class="d-flex align-items-center gap-3">
+                            <img [src]="getMostFrequentWeatherIcon(weatherData.data[0].cuaca[2])" alt="Weather icon" style="height: 30px;">
+                            <span>{{ getMostFrequentWeather(weatherData.data[0].cuaca[2]) }}</span>
+                        </div>
+                        <span>{{ getDayMinMaxTemp(weatherData.data[0].cuaca[2]) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
