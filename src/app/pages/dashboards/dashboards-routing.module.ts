@@ -12,14 +12,21 @@ import { StarterComponent } from '../extrapages/starter/starter.component';
 
 const routes: Routes = [
 
+  /* START */
   {
     path: "",
     component: StarterComponent
   },
+
+  
+
   {
-    path: "analytics",
+    path: "earthquake",
     component: AnalyticsComponent
   },
+
+  /* END */
+
   {
     path: "crm",
     component: CrmComponent

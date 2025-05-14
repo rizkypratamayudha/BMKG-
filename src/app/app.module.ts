@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 
 import { LayoutsModule} from "./layouts/layouts.module";
 import { PagesModule } from "./pages/pages.module";
+import { NgxSpinnerModule } from "ngx-spinner";
 
 // Auth
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS  } from '@angular/common/http';
@@ -52,7 +53,9 @@ if (environment.defaultauth === 'firebase') {
     AppRoutingModule,
     LayoutsModule,
     PagesModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgxSpinnerModule,
+    
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

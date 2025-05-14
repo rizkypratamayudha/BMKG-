@@ -13,7 +13,7 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   getWeatherData() {
-    return this.http.get(this.apiUrl + 'publik/prakiraan-cuaca?adm4=35.73.05.1007')
+    return this.http.get(this.apiUrl + 'publik/prakiraan-cuaca?adm4=35.14.06.2012')
       .pipe(
         catchError((error) => {
           console.error('Error fetching weather data', error);

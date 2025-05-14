@@ -17,6 +17,12 @@ export const MENU: MenuItem[] = [
         link: '',
         parentId: 2,
       },
+      {
+        id: 10,
+        label: 'Earthquake',
+        link: '/earthquake',
+        parentId: 2,
+      }
       // {
       //   id: 3,
       //   label: 'MENUITEMS.DASHBOARD.LIST.ANALYTICS',

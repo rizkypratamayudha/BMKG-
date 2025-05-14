@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { WeatherService } from 'src/app/core/services/weather/weather.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class StarterComponent implements OnInit {
 
   constructor(
     private weatherService: WeatherService,
+    private spinner: NgxSpinnerService,
   ) { }
 
   ngOnInit(): void {
@@ -37,13 +39,16 @@ export class StarterComponent implements OnInit {
   }
 
   getWeatherData() {
+    this.spinner.show();
     this.weatherService.getWeatherData().subscribe(
       (data: any) => {
         this.weatherData = data;
         console.log(this.weatherData);
+        this.spinner.hide();
       },
       (error: any) => {
         console.error('Error fetching weather data', error);
+        this.spinner.hide();
       }
     );
   }
@@ -65,7 +70,7 @@ export class StarterComponent implements OnInit {
     if (!datetimeStr) return '';
     
     const date = new Date(datetimeStr);
-    return date.toLocaleDateString('en-US', { weekday: 'short' });
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
   }
 
   // Get min and max temperature for a day's forecasts
